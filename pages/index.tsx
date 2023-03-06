@@ -7,7 +7,7 @@ export async function getServerSideProps() {
         const client = await clientPromise;
         const db = client.db("chess");
 
-        const movies = await db
+        const users = await db
             .collection("users")
             .find({})
             .sort({ metacritic: -1 })
@@ -15,16 +15,35 @@ export async function getServerSideProps() {
             .toArray();
 
         return {
-            props: { movies: JSON.parse(JSON.stringify(movies)) },
+            props: { users: JSON.parse(JSON.stringify(users)) },
         };
     } catch (e) {
         console.error(e);
     }
 }
 
-export default function Home({
-  movies
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home({users}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  let user = "sdfsdafds"
+  console.log(users);
+  const updateCall = async () => {
+    try {
+      const response = await fetch('/api/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+    });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const userData = await response.json();
+      return userData;
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+  }}
+
   return (
     <div className="container">
       <Head>
@@ -32,11 +51,14 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-     {movies.map((mov: any)=>(
-        <div key={mov.id}>
-        <h2>{mov.name}</h2>
+      
+     {users.map((us: any)=>(
+        <div key={us._id}>
+          <h2>{us.last}</h2>
         </div>
      ))}
+
+     <button onClick={updateCall}>Click</button>
     </div>
   )
 }
