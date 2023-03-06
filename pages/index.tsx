@@ -1,8 +1,11 @@
 import Head from 'next/head'
 import clientPromise from '../lib/mongodb'
 import { InferGetServerSidePropsType } from 'next'
+import Try from '../components/try';
+import { useStore } from 'zustand';
 
 export async function getServerSideProps() {
+
     try {
         const client = await clientPromise;
         const db = client.db("chess");
@@ -24,25 +27,44 @@ export async function getServerSideProps() {
 
 export default function Home({users}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   let user = "sdfsdafds"
-  console.log(users);
+  console.log(users)
+  //update
   const updateCall = async () => {
     try {
       const response = await fetch('/api/update', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(user)
-    });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const userData = await response.json();
+        console.log('updated tru:', userData);
+        
+        return userData;
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+  }
+}
 
-      const userData = await response.json();
-      return userData;
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-  }}
+
+const deleteCall = async () => {
+    try {
+      const response = await fetch('/api/delete', {
+      method: 'DELETE',
+      });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const deletedData = await response.json();
+        console.log('updated tru:', deletedData);
+        
+        return deletedData; 
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+  }
+}
 
   return (
     <div className="container">
@@ -58,7 +80,10 @@ export default function Home({users}: InferGetServerSidePropsType<typeof getServ
         </div>
      ))}
 
-     <button onClick={updateCall}>Click</button>
+     <button onClick={updateCall}>update</button>
+     <button onClick={deleteCall}>Delete</button>
+
+     <Try />
     </div>
   )
 }

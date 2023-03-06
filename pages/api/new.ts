@@ -12,7 +12,7 @@ export default async (req: any, res: any) => {
            .collection("users")//collection name
            .insertOne({ name, last });
 
-       res.json(movies);
+       res.json(movies);    
    } catch (e) {
        console.error(e);
    }
