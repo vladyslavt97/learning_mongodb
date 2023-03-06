@@ -5,10 +5,10 @@ import { InferGetServerSidePropsType } from 'next'
 export async function getServerSideProps() {
     try {
         const client = await clientPromise;
-        const db = client.db("sample_mflix");
+        const db = client.db("chess");
 
         const movies = await db
-            .collection("movies")
+            .collection("users")
             .find({})
             .sort({ metacritic: -1 })
             .limit(20)
@@ -34,7 +34,7 @@ export default function Home({
 
      {movies.map((mov: any)=>(
         <div key={mov.id}>
-        <h2>{mov.fullplot}</h2>
+        <h2>{mov.name}</h2>
         </div>
      ))}
     </div>
