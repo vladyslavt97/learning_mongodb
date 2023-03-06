@@ -1,6 +1,7 @@
 
 import { useEffect } from 'react';
 import { create } from 'zustand';
+import Edit from './Edit';
 import { useStore } from './State';
 
 interface ConcertsState {
@@ -48,10 +49,10 @@ export default function Try() {
           <div key={concert._id}>
             <h1 >{concert.link}</h1>
             <button onClick={()=>deleteId(concert._id)}>Delete</button>
+            <Edit id={concert._id}/>
           </div>
           )
         )}
-
     </div>
   )
 }
