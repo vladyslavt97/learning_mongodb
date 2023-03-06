@@ -13,7 +13,6 @@ export default function Try() {
   const concerts = useStore((state: ConcertsState) => state.concerts);
   const setConcerts = useStore((state: ConcertsState) => state.setConcerts);
   const removeConcert = useStore((state: ConcertsState) => state.removeConcert);
-  console.log('removeConcert', removeConcert);
   
   useEffect(() => {
     fetch('/api/users')
@@ -23,9 +22,24 @@ export default function Try() {
       });
   }, []);
 
-  const figureId = (i: any) => {
-    console.log('ididididi', i);
+  const deleteId = async (i: any) => {
     removeConcert(i);
+    try {
+      const response = await fetch('/api/delete', {
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({id: i})
+      });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const deletedData = await response.json();
+        console.log('updated tru:', deletedData);
+        
+        return deletedData; 
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
   } 
   
   return (
@@ -33,7 +47,7 @@ export default function Try() {
         {concerts.map((concert: any)=>(
           <div key={concert._id}>
             <h1 >{concert.link}</h1>
-            <button onClick={()=>figureId(concert._id)}>Delete</button>
+            <button onClick={()=>deleteId(concert._id)}>Delete</button>
           </div>
           )
         )}

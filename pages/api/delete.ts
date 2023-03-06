@@ -5,14 +5,14 @@ import clientPromise from "../../lib/mongodb";
 
 
 export default async (req: any, res: any) => {
-    console.log("req.body", req.body);
+    const {id} = req.body;
     
    try {
         const client = await clientPromise;
-        const db = client.db("chess"); //db name
-        const collection = db.collection('users');
+        const db = client.db("Maxim_Rysanov"); //db name
+        const collection = db.collection('concerts-2023');
         const movies = await collection//collection name
-           .deleteOne({ _id: new ObjectId('6405356e0a7eb61f74d97ad8') });
+           .deleteOne({ _id: new ObjectId(id) });
 
        res.json(movies);
    } catch (e) {

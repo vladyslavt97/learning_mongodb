@@ -49,22 +49,7 @@ export default function Home({users}: InferGetServerSidePropsType<typeof getServ
 }
 
 
-const deleteCall = async () => {
-    try {
-      const response = await fetch('/api/delete', {
-      method: 'DELETE',
-      });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const deletedData = await response.json();
-        console.log('updated tru:', deletedData);
-        
-        return deletedData; 
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-  }
-}
+
 
   return (
     <div className="container">
@@ -81,8 +66,6 @@ const deleteCall = async () => {
      ))}
 
      <button onClick={updateCall}>update</button>
-     <button onClick={deleteCall}>Delete</button>
-
      <Try />
     </div>
   )
