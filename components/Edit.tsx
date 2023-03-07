@@ -13,6 +13,7 @@ interface ConcertsState {
 export default function Edit(props: Props) {
     const [open, setOpen] = useState(false);
     const [link, setLink] = useState("");
+    const concerts = useStore((state: ConcertsState) => state.concerts);
     const editConcertDb = useStore((state: ConcertsState) => state.editConcertDb);
     const editConcert = () =>{
         setOpen(!open);
@@ -20,8 +21,6 @@ export default function Edit(props: Props) {
     
     const updateDBandZustand = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log('link, props.id',link, props.id);
-
         try {
       const response = await fetch('/api/update', {
       method: 'POST',
@@ -32,8 +31,10 @@ export default function Edit(props: Props) {
           throw new Error('Network response was not ok');
         }
         const userData = await response.json();
-        console.log('updated tru:', userData);
-        editConcertDb(userData);
+        let index = concerts.findIndex((el:any)=>el._id === userData._id)
+        const newConcerts = [...concerts];
+        newConcerts[index] = userData;
+        editConcertDb(newConcerts);
         return userData;
         } catch (error) {
         console.error('Error fetching user data:', error);
