@@ -10,10 +10,18 @@ export default async (req: any, res: any) => {
         const db = client.db("Maxim_Rysanov"); //db name
         const collection = db.collection('concerts-2023');
         const concertsUpd = await collection//collection name
-           .updateOne({ _id: new ObjectId(id) }, {$set: {link: link}} );
-        console.log(concertsUpd);
+           .findOneAndUpdate({ _id: new ObjectId(id) }, {$set: {link: link}}, { returnDocument: "after" }  );
+        console.log('concertsUpd', concertsUpd);
+
+
+        //return new array
+        const updatedArr = await collection.find({})//gives everything
+           .sort({ metacritic: -1 })
+           .limit(10)
+           .toArray();//returns json
+        console.log('collection', updatedArr);
         
-       res.json(concertsUpd);
+       res.json(updatedArr);
    } catch (e) {
        console.error(e);
    }
