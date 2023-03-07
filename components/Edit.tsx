@@ -1,12 +1,13 @@
 import { FormEvent, useState } from "react";
-import { useStore } from "zustand";
+import { useStore } from "./State";
 
 type Props = {
     id: string
 }
 
 interface ConcertsState {
-  editConcertDb: (newArr: []) => void;
+  concerts: Object,
+  editConcertDb: (newArr: Object) => void;
 }
 
 export default function Edit(props: Props) {

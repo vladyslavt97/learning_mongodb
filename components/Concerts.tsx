@@ -41,9 +41,11 @@ export default function Try() {
         console.error('Error fetching user data:', error);
     }
   } 
+  console.log('concertsconcerts@', concerts);
   
   return (
     <div>
+      {concerts.length !== 0 && <div>
         {concerts.map((concert: any)=>(
           <div key={concert._id}>
             <h1 >{concert.link}</h1>
@@ -52,6 +54,8 @@ export default function Try() {
           </div>
           )
         )}
+        </div>
+        }
     </div>
   )
 }

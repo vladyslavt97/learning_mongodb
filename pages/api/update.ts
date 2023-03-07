@@ -14,7 +14,6 @@ export default async (req: any, res: any) => {
         console.log('concertsUpd', concertsUpd);
 
 
-        //return new array
         const updatedArr = await collection.find({})//gives everything
            .sort({ metacritic: -1 })
            .limit(10)
