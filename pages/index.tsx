@@ -2,7 +2,6 @@ import Head from 'next/head'
 import clientPromise from '../lib/mongodb'
 import { InferGetServerSidePropsType } from 'next'
 import Try from '../components/Concerts';
-import { useStore } from 'zustand';
 
 export async function getServerSideProps() {
 
